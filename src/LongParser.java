@@ -18,12 +18,9 @@ public class LongParser {
 
         int scalingFactor = getScalingFactor(s);
         String normalizedString = normalize(s);
-        debugPrint("Normalized string: %s", normalizedString);
         long res = scalingFactor * digitParser.parseDigit(normalizedString.charAt(0));
         for (int i = 1; i < normalizedString.length(); i++) {
             int nextDigit = digitParser.parseDigit(normalizedString.charAt(i));
-            debugPrint("Res is currently %s", res);
-            debugPrint("Next digit is %s", nextDigit);
             if (res > MIN_POS_CHECK_THRESHOLD || res < MIN_NEG_CHECK_THRESHOLD) {
                 try {
                     checkForOverflow(res, nextDigit, scalingFactor);
@@ -43,10 +40,6 @@ public class LongParser {
         } catch (InterruptedException e) {
             System.exit(1);
         }
-    }
-
-    private void debugPrint(String format, Object... objects) {
-        System.out.printf(format + '\n', objects);
     }
 
     private static int getScalingFactor(String s) {
@@ -86,7 +79,6 @@ public class LongParser {
         long diff = current > 0 ?
                 MAX_VALUE / RADIX - current
                 : MIN_VALUE / RADIX - current;
-        debugPrint("Current: %s\nDiff: %s", current, diff);
         if (diff < 0) {
             throw new NumberFormatException("Long overflow.");
         }
@@ -128,7 +120,6 @@ public class LongParser {
     }
 
     public static void main(String[] args) {
-        System.out.println(MIN_VALUE);
         String numToParse = args[0];
         LongParser stringToLong = new LongParser();
         long res = stringToLong.parse(numToParse);
